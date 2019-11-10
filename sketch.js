@@ -14,6 +14,8 @@ let points = [[]];
 
 let clickedLastDraw = false;
 
+let time = 0;
+
 function setup() {
     createCanvas(750,750);
     background(255,255,255);
@@ -42,6 +44,7 @@ function setup() {
 
 function linesCheckBoxEvent(){
     printLines = !printLines;
+    clickedLastDraw = true;
 }
 
 function plusPressed(){
@@ -73,18 +76,20 @@ function newPressed(){
 
 
 function draw() {
+    time += deltaTime;
     if(clickedLastDraw){
         background(255,255,255);
         clickedLastDraw = false;
     }
   
-    if(mouseIsPressed && !(mouseX <100 && mouseY <150)){
+    if(mouseIsPressed && !(mouseX <100 && mouseY <150) && time > 300){
         fill(255,0,0);
         circle(mouseX,mouseY,10);
         var p1 = createVector(mouseX,mouseY);
         append(points[currentCurve],p1);
         clickedLastDraw = true;
-        console.log(points[0][0].x);
+        console.log(points[0].length);
+        time = 0;
     }
   
     for(var i = 0;i < points.length;i++){
