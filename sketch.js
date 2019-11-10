@@ -1,11 +1,12 @@
 let buttonPlus;
 let buttonLess;
-let currentCurve = 0;
+let currentCurve = -1;
 let currentCurveDiv;
-let numCurves = 1;
+let numCurves = 0;
 let newButton;
+let deleteCurveButton;
 
-//buttons to create and choose between cuves
+//buttons to create and choose between curves
 
 let pointsBox;
 let printPoints = true;
@@ -19,7 +20,7 @@ let printCurve = true;
 let deletingCheckbox;
 let deleting = false;
 
-let points = [[]];
+let points = [];
 
 let clickedLastDraw = false;
 
@@ -42,7 +43,11 @@ function setup() {
     
     newButton = createButton('new');
     newButton.mousePressed(newPressed);
-    newButton.position(40,50);
+    newButton.position(50,50);
+  
+    deleteCurveButton = createButton('delete curve');
+    deleteCurveButton.mousePressed(deletePressed);
+    deleteCurveButton.position(0,230);
   
     lines = createCheckbox('lines', false);
     lines.changed(linesCheckBoxEvent);
@@ -83,6 +88,24 @@ function deletingCheckboxEvent(){
     deleting = !deleting;
 }
 
+function deletePressed(){
+    if(numCurves > 0){
+        points.splice(currentCurve,1);
+        numCurves--;
+        clickedLastDraw = true;
+        if(currentCurve == numCurves){
+            currentCurve--;
+            currentCurveDiv.remove();
+            if(currentCurve<0){
+                currentCurveDiv = createDiv('nop');
+            }else{
+                currentCurveDiv = createDiv(currentCurve);
+            }
+            currentCurveDiv.position(20,50);
+        }
+    }
+}
+
 function plusPressed(){
     if(currentCurve < numCurves-1){
         currentCurve++;
@@ -120,10 +143,12 @@ function draw() {
   
     if(mouseIsPressed && !(mouseX <100 && mouseY < 300) && time > 300){
         if(!deleting){
-            fill(255,0,0);
-            circle(mouseX,mouseY,10);
             var p1 = createVector(mouseX,mouseY);
-            append(points[currentCurve],p1);
+            if(numCurves > 0){
+                fill(255,0,0);
+                circle(mouseX,mouseY,10);
+                append(points[currentCurve],p1);
+            }
             //console.log(points[currentCurve].length);
         }else{
             for(var i = 0; i < points[currentCurve].length;i++){
