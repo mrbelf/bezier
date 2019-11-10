@@ -7,8 +7,17 @@ let newButton;
 
 //buttons to create and choose between cuves
 
+let pointsBox;
+let printPoints = true;
+
 let lines;
 let printLines = false;
+
+let bCurve;
+let printCurve = true;
+
+let deletingCheckbox;
+let deleting = false;
 
 let points = [[]];
 
@@ -38,6 +47,19 @@ function setup() {
     lines = createCheckbox('lines', false);
     lines.changed(linesCheckBoxEvent);
     lines.position(20,110);
+    
+    pointsBox = createCheckbox('points',true);
+    pointsBox.changed(pointsCheckboxEvent);
+    pointsBox.position(20,140);
+
+    bCurve = createCheckbox('curve', true);
+    bCurve.changed(linesCheckBoxEvent);
+    bCurve.position(20,170);
+      
+    deletingCheckbox = createCheckbox('deleting',false);
+    deletingCheckbox.changed(deletingCheckboxEvent);
+    deletingCheckbox.position(20,200);
+  
     currentCurveDiv = createDiv(currentCurve);
     currentCurveDiv.position = (20,50);
 }
@@ -45,6 +67,20 @@ function setup() {
 function linesCheckBoxEvent(){
     printLines = !printLines;
     clickedLastDraw = true;
+}
+
+function pointsCheckboxEvent(){
+    printPoints = !printPoints;
+    clickedLastDraw = true;
+}
+
+function curveCheckboxEvent(){
+    printCurve = !printCurve;
+    clickedLastDraw = true;
+}
+
+function deletingCheckboxEvent(){
+    deleting = !deleting;
 }
 
 function plusPressed(){
@@ -82,14 +118,22 @@ function draw() {
         clickedLastDraw = false;
     }
   
-    if(mouseIsPressed && !(mouseX <100 && mouseY <150) && time > 300){
-        fill(255,0,0);
-        circle(mouseX,mouseY,10);
-        var p1 = createVector(mouseX,mouseY);
-        append(points[currentCurve],p1);
-        clickedLastDraw = true;
-        console.log(points[0].length);
+    if(mouseIsPressed && !(mouseX <100 && mouseY < 300) && time > 300){
+        if(!deleting){
+            fill(255,0,0);
+            circle(mouseX,mouseY,10);
+            var p1 = createVector(mouseX,mouseY);
+            append(points[currentCurve],p1);
+            //console.log(points[currentCurve].length);
+        }else{
+            for(var i = 0; i < points[currentCurve].length;i++){
+                if(7 >sqrt((mouseX-points[currentCurve][i].x)*(mouseX-points[currentCurve][i].x) + (mouseY-points[currentCurve][i].y)*(mouseY-points[currentCurve][i].y))){
+                    points[currentCurve].splice(i,1);
+                }
+            }
+        }
         time = 0;
+        clickedLastDraw = true;
     }
   
     for(var i = 0;i < points.length;i++){
@@ -101,7 +145,9 @@ function draw() {
                }else{
                    fill(0,0,0);
                }
-            circle(x,y,10);
+            if(printPoints){
+                circle(x,y,10);
+            }
             if(printLines){
                   if(points[i].length-1 > j){
                       fill(0,0,255);
