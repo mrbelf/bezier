@@ -25,6 +25,7 @@ let points = [];
 let clickedLastDraw = false;
 
 let time = 0;
+let mousePressedLastDraw = false;
 
 function setup() {
     createCanvas(750,750);
@@ -58,14 +59,14 @@ function setup() {
     pointsBox.position(20,140);
 
     bCurve = createCheckbox('curve', true);
-    bCurve.changed(linesCheckBoxEvent);
+    bCurve.changed(curveCheckboxEvent);
     bCurve.position(20,170);
       
     deletingCheckbox = createCheckbox('deleting',false);
     deletingCheckbox.changed(deletingCheckboxEvent);
     deletingCheckbox.position(20,200);
   
-    currentCurveDiv = createDiv(currentCurve);
+    currentCurveDiv = createDiv('nop');
     currentCurveDiv.position = (20,50);
 }
 
@@ -141,7 +142,8 @@ function draw() {
         clickedLastDraw = false;
     }
   
-    if(mouseIsPressed && !(mouseX <100 && mouseY < 300) && time > 300){
+    if(mouseIsPressed && !(mouseX <100 && mouseY < 300) && mousePressedLastDraw){
+        mousePressedLastDraw = true;
         if(!deleting){
             var p1 = createVector(mouseX,mouseY);
             if(numCurves > 0){
