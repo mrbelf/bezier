@@ -77,11 +77,13 @@ function setup() {
     inputAval = createInput('1000');
     inputAval.input(inputEvent);
     inputAval.position(0,260);
+    inputAval.size(85,AUTO);
 }
 
 function inputEvent() {
     numAv = this.value();
     //console.log(numAv);
+    clickedLastDraw = true;
 }
 
 function linesCheckBoxEvent(){
@@ -158,7 +160,7 @@ function castanhaDoPara(points){
   var x = 0;
   var inv = 1/numAv;
   let aux = [];
-  for(let i = 0; i < numAv; i++){
+  for(let i = 0; i <= numAv; i++){
     x  = i*inv;
     for(let j = 0; j < points.length; j++){
       for(let k = 0; k < points.length - j; k++){
