@@ -29,6 +29,9 @@ let mousePressedLastDraw = false;
 let draging = false;
 let currentPoint;
 
+let numAv = 1000;
+let inputAval;
+
 function setup() {
     createCanvas(750,750);
     background(255,255,255);
@@ -70,6 +73,15 @@ function setup() {
   
     currentCurveDiv = createDiv('nop');
     currentCurveDiv.position = (20,50);
+  
+    inputAval = createInput('1000');
+    inputAval.input(inputEvent);
+    inputAval.position(0,260);
+}
+
+function inputEvent() {
+    numAv = this.value();
+    //console.log(numAv);
 }
 
 function linesCheckBoxEvent(){
