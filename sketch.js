@@ -24,8 +24,10 @@ let points = [];
 
 let clickedLastDraw = false;
 
-let time = 0;
 let mousePressedLastDraw = false;
+
+let draging = false;
+let currentPoint;
 
 function setup() {
     createCanvas(750,750);
@@ -133,25 +135,41 @@ function newPressed(){
     append(points,[]);
 }
 
-
+function mouseReleased() {
+    mousePressedLastDraw = false;
+    draging = false;
+    //console.log('released');
+}
 
 function draw() {
-    time += deltaTime;
     if(clickedLastDraw){
         background(255,255,255);
         clickedLastDraw = false;
     }
   
-    if(mouseIsPressed && !(mouseX <100 && mouseY < 300) && mousePressedLastDraw){
+    if(mouseIsPressed && !(mouseX <100 && mouseY < 300) && (!mousePressedLastDraw||draging) && numCurves>0){
         mousePressedLastDraw = true;
         if(!deleting){
-            var p1 = createVector(mouseX,mouseY);
-            if(numCurves > 0){
-                fill(255,0,0);
-                circle(mouseX,mouseY,10);
-                append(points[currentCurve],p1);
+            if(!draging){
+                for(var i = 0; i < points[currentCurve].length;i++){
+                    if(7 >sqrt((mouseX-points[currentCurve][i].x)*(mouseX-points[currentCurve][i].x) + (mouseY-points[currentCurve][i].y)*(mouseY-points[currentCurve][i].y))){
+                        draging = true;
+                        currentPoint = i;
+                    }
+                }
             }
-            //console.log(points[currentCurve].length);
+            if(draging){
+                points[currentCurve][currentPoint].x = mouseX;
+                points[currentCurve][currentPoint].y = mouseY;
+            }else{
+                var p1 = createVector(mouseX,mouseY);
+                if(numCurves > 0){
+                    fill(255,0,0);
+                    circle(mouseX,mouseY,10);
+                    append(points[currentCurve],p1);
+                }
+                //console.log(points[currentCurve].length);
+            }
         }else{
             for(var i = 0; i < points[currentCurve].length;i++){
                 if(7 >sqrt((mouseX-points[currentCurve][i].x)*(mouseX-points[currentCurve][i].x) + (mouseY-points[currentCurve][i].y)*(mouseY-points[currentCurve][i].y))){
@@ -159,7 +177,6 @@ function draw() {
                 }
             }
         }
-        time = 0;
         clickedLastDraw = true;
     }
   
