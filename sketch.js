@@ -33,7 +33,7 @@ let numAv = 1000;
 let inputAval;
 
 function setup() {
-    createCanvas(750,750);
+    createCanvas(900,900);
     background(255,255,255);
   
     buttonPlus = createButton('+');
@@ -78,6 +78,14 @@ function setup() {
     inputAval.input(inputEvent);
     inputAval.position(0,260);
     inputAval.size(85,AUTO);
+
+    line(890,0,890,890);
+    line(890,890,0,890);
+    fill(128,128,128);
+    rect(0, 0, 100, 300);
+    
+    newPressed();
+    
 }
 
 function inputEvent() {
@@ -189,9 +197,15 @@ function draw() {
     if(clickedLastDraw){
         background(255,255,255);
         clickedLastDraw = false;
+
+        line(890,0,890,890);
+        line(890,890,0,890);
+        
+        fill(128,128,128);
+        rect(0, 0, 100, 300);
     }
   
-    if(mouseIsPressed && !(mouseX <100 && mouseY < 300) && (!mousePressedLastDraw||draging) && numCurves>0){
+    if(mouseIsPressed && (mouseX < 890 && mouseY < 890 && mouseX > 0 && mouseY > 0 ) && !(mouseX <100 && mouseY < 300) && (!mousePressedLastDraw||draging) && numCurves>0){
         mousePressedLastDraw = true;
         if(!deleting){
             if(!draging){
