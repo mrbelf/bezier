@@ -243,8 +243,9 @@ function draw() {
             }
             if(printLines){
                   if(points[i].length-1 > j){
-                      fill(0,0,255);
+                      stroke(0,255,0);
                       line(points[i][j].x,points[i][j].y,points[i][j+1].x,points[i][j+1].y);
+                      stroke(0);
                    }
             }
         }
